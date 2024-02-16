@@ -22,3 +22,112 @@ Import
 ```{r}
 read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
 ```
+
+```{r}
+  read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
+```
+
+\# Read the Excel file into a data frame
+
+```{r}
+data <- read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
+```
+
+```{r}
+glimpse(data)
+```
+
+#Delete the row named dictionary
+
+```{r}
+data <- head(data, -1)
+```
+
+```{r}
+glimpse(data)
+```
+
+#Remove the last row
+
+```{r}
+data %>% select(-ncol(df))
+```
+
+```{r}
+glimpse(data)
+```
+
+```{r}
+data %>% mutate(int_renew_wat = as.integer(int_renew_wat), 
+                precip = as.integer(precip),
+                tot_renew_wat = as.integer(tot_renew_wat),
+                depend_ratio = as.integer(depend_ratio),
+                tot_renew_inhab = as.integer(tot_renew_inhab),
+                tot_dam_cap = as.integer(tot_dam_cap),
+                pop_safe_wat =as.integer(pop_safe_wat),
+                urban_pop_safe_wat = as.integer(urban_pop_safe_wat))
+```
+
+```{r}
+data %>% mutate(year_obt...16 = as.Date(year_obt...16),
+                year_obt...10 = as.Date(year_obt...10),
+                year_obt...12 = as.Date(year_obt...12),
+                year_obt...14 = as.Date(year_obt...14),
+                latest_year = as.Date(latest_year))
+```
+
+```{r}
+data <- read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
+```
+
+```{r}
+glimpse(data)
+```
+
+Delete extra rows
+
+```{r}
+water_res_eafrica <- data %>% slice(-16:-19)
+```
+
+Omit NA
+
+```{r}
+na.omit(water_res_eafrica)
+```
+
+Change column information from character to dbl
+
+```{r}
+cleaned <- water_res_eafrica %>% mutate(int_renew_wat = as.double(int_renew_wat),
+                             tot_renew_wat = as.double(tot_renew_wat),
+                             depend_ratio = as.double(depend_ratio),
+                             tot_renew_inhab =as.double(tot_renew_inhab),
+                             tot_dam_cap = as.double(tot_dam_cap),
+                             irrig_withd = as.double(irrig_withd),
+                             pop_safe_wat = as.double(pop_safe_wat),
+                             rural_pop_safe_wat = as.double(rural_pop_safe_wat),
+                             urban_pop_safe_wat = as.double(urban_pop_safe_wat),
+                             year_obt...16 = as.double(year_obt...16),
+                             time_frame = as.numeric(time_frame))
+```
+
+```{r}
+write.csv(cleaned, file = "cloud/project/data/processed/cleaned.csv", row.names = FALSE)
+```
+
+```{r}
+file.path("processed")
+```
+
+```{r}
+processed_path <- file.path("path/to/processed")
+```
+
+```{r}
+print(processed_path)
+```
+
+```{r}
+write.csv(cleaned, file = paste0(processed_path, "/cleaned.csv"), row.names = FALSE)
+```

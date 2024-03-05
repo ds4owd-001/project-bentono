@@ -1,0 +1,275 @@
+---
+title: "Renewable Water Resources in Eastern Africa"
+author:
+  name: "Benton Otieno"
+  orcid: 0000-0002-1763-1584
+email: bentononyango@gmail.com
+date: 2-16-2024
+output:
+  bookdown::html_document2:
+    theme: flatly
+    highlight: tango
+    toc: true
+format:
+  html:
+    embed-resources: true
+    toc: true
+    code-fold: true
+    code-folding: true
+execute:
+  warning: false
+editor_options: 
+  chunk_output_type: console
+editor: visual
+header-includes:
+  - \usepackage{hyperref}
+bibliography: references.bib
+citation_package: natbib
+citation_minimal: true
+citation_style: author-year
+---
+
+# Introduction
+
+Water security mainly refers to issues pertaining to quality, reliability, quantity, environmental provisioning, and equitable access to water supplies. According to the working definition of UN Water, water security can be defined as: “The capacity of a population to safeguard sustainable access to adequate quantities and acceptable quality of water for sustaining livelihoods, human well-being, and socio-economic development, for ensuring protection against water-borne pollution and water related disasters, and for preserving ecosystems in a climate of peace and political stability”.
+
+Africa has a combined population of over 1 billion people and represents about 17% of the global population. Its water resources are estimated to be nearly 9% of the world’s freshwater resources [@Haile2020]. However, these resources are unevenly distributed, with the most water-rich countries in Central and Western Africa holding 54% of the continent’s total resources and the 27 most water-poor countries holding only 7%. In the Eastern Africa region, countries are characterised by varying degrees of water scarcity as given by @Mapani2019. The current study sought to analyse the exsiting renewable water resources in the region and water withdrawals.
+
+# Methods
+
+Data was collected from the website of the World Food and Agriculture Organisation (FAO), stored on an excel workbook, then impoted to R for cleaning and analysis to determine the exsiting renewable water resources in the region, water withdrawals, and access.
+
+***Data importation and cleaning***
+
+```{r}
+#load packages for data cleaning 
+library(readxl) 
+library(dplyr) 
+library(tidyr) 
+library(lubridate) 
+library(readxl) 
+library(readr) 
+library(janitor) 
+library(tidyverse)
+```
+
+```{r}
+#Import data and save as a new data frame
+data_water <-  read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
+```
+
+```{r}
+#Select columns "1" to "20" and rows "1" to "15" 
+data_water_subset <- data_water[1:15, 1:20]  
+  
+
+#Change column infromation and leave NAs as blank 
+data_water_subset <- data_water_subset %>%   mutate(across(c(int_renew_wat, tot_renew_wat, depend_ratio, tot_renew_inhab, tot_dam_cap, irrig_withd, pop_safe_wat, rural_pop_safe_wat, urban_pop_safe_wat, latest_year),                  ~ifelse(is.na(.), "", .)))  
+
+```
+
+```{r}
+#Save tidy data in the processed folder 
+write_csv(data_water_subset, here::here("data/processed/final_capstone_data.csv")) 
+```
+
+# Results
+
+Freshwater sustainability is the most crucial sustainable development challenge since it deals with most needed and finite resource on earth. Availability of freshwater resources plays an important role in determining the socio-economic development of a country or region. Table 1 gives the renewable water resources in the region by average and country. As of 2015, Kenya’s and South Sudan’s renewable water resources per capita were rated between 500 to 1,000 m^3^ (water scarcity). Tanzania and Uganda were rated between 1,700 to 2,500 m^3^ (vulnerable) the remaining countries in the east African region were rated between 1,000 to 1,700 m^3^ (water stressed) as depicted in Figure 1. By 2025, several countries in the Eastern
+
+```{r}
+#Loading packages for data analysis
+
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(rmarkdown)
+library(ggplot2)
+library(gt)
+library(scales)
+library(readr)
+library(here)
+library(knitr)
+library(kableExtra)
+library(magrittr)
+library(htmltools)
+library(dplyr)
+library(stringr)
+library(tidyr)
+library(plotrix)
+library(ggrepel)
+library(cowplot)
+library(bibtex)
+
+#Printing Table 1 with a new row showing averages
+
+# Selecting the first four columns of the data set
+subset <- data_water_subset[, 1:4]
+
+
+coerce_numeric <- function(x) {
+  as.numeric(as.character(x))
+}
+
+# Convert columns 2, 3, and 4 to numeric
+subset[, 2:4] <- lapply(subset[, 2:4], coerce_numeric)
+
+# Calculate average for columns 2, 3, and 4 excluding NA values
+averages <- colMeans(subset[, 2:4], na.rm = TRUE)
+
+# Create a new row with the averages
+average_row <- c("Average", round(averages, 3))
+
+# Add the new row to the data frame
+subset <- rbind(subset, average_row)
+
+#Delete extra rows
+subset <- subset[-c(17), ]
+
+# Define the column widths
+column_widths <- c(80, 100, 150, 150)
+
+
+# Define the new column names
+new_column_names <- c("Country", "Precitation (mm/yr)", "Internal renewable water (million m3)", "Total renewable water (million m3)")
+
+# Replace the existing column names with the new ones
+colnames(subset) <- new_column_names
+
+# Print the plot of Table 1
+knitr::kable(subset, "html") %>%  # Render the table using knitr
+  kableExtra::add_header_above(c("Table 1: Renewable water Resources in East Africa (2013-2017)" = 4)) %>%  # Add the header with the specified title
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE,  # Apply styling to the table
+                            latex_options = c("label = tab:water_resources",  # Set the label for cross-referencing
+                                              "caption = {\\label{tab:water_resources} Table 1: Renewable water Resources in East Africa (2013-2017)}")) %>%  # Set the caption with the label
+  kableExtra::column_spec(seq_len(ncol(subset)), width = c(80, 100, 150, 150))  # Specify column widths
+
+
+```
+
+```{r}
+#Plotting Figure 1 (Bar graph of Country vs Totat renewable water resources/inhabitant)
+
+# Copy the original data frame and update the column name
+renamed_df <- data_water_subset %>%
+  select(Country, tot_renew_inhab) %>%  
+  rename(`Total renewable water resources per inhabitant` = tot_renew_inhab) %>%  
+  mutate(`Total renewable water resources per inhabitant` = as.character(`Total renewable water resources per inhabitant`),  
+         `Total renewable water resources per inhabitant` = if_else(is.na(`Total renewable water resources per inhabitant`), "0", `Total renewable water resources per inhabitant`),  # Replace NA with "0" as character
+         `Total renewable water resources per inhabitant` = as.numeric(`Total renewable water resources per inhabitant`))  # Convert to numeric
+
+plot <- ggplot(data = renamed_df, aes(x = reorder(Country, `Total renewable water resources per inhabitant`), 
+                                      y = `Total renewable water resources per inhabitant`, 
+                                      fill = Country)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Country", y = "Total renewable water resources per inhabitant (m3)") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) + 
+  scale_fill_discrete(guide = "none") + 
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10), 
+                   breaks = function(x) x[seq(1, length(x), by = 1)]) + 
+  scale_y_continuous(breaks = seq(0, 14000, by = 2000)) + 
+  coord_cartesian(ylim = c(0, 14000)) +
+  labs(caption = "Figure 1: Renewable water resources in East Africa (2013-2017)", 
+     label = "fig:plot") +  # Set label for cross-reference
+  theme(plot.caption = element_text(hjust = 0))  # Left-align caption
+
+# Print the plot
+print(plot)
+
+```
+
+Of the Eastern Africa countries, Eritrea and Djibouti faced the highest water stress index levels with a ratio of water withdrawals to supply more than 80%. The remaining countries had low water stress (less than 10%) except Tanzania with a low to medium stress (10 – 20%). The water stress index was developed for countries, governments, and companies to identify the possible risk of water supply interruptions to businesses, agricultural activities, operations, domestic and industrial use, and other water related activities. Owing to population growth, climate change, expanded irrigation, improved living standards, and increased industrial activities, the gap between water demand and supply has been growing resulting in reduced freshwater availability. Rapid urbanization and expanded irrigation farming (industrial and commercial) are threatening the limited water resources, including freshwater sources undefined. Agriculture (Figure 2) being the main economic activity in the region accounts for up to 87% use of the available wateresources as compared to municipal (Figure 3) and industrial (Figure 4) uses. The values given for the withdrawals are varyring estimates between 1999 and 2017.
+
+```{r}
+#Plotting Figures 2, 3, and 4 showing renewable water withdrawals by different ssectors per country
+# Convert relevant columns to numeric
+data_water_subset[, c("agric_withd", "ind_withd", "munic_withd")] <- 
+  lapply(data_water_subset[, c("agric_withd", "ind_withd", "munic_withd")], as.numeric)
+
+# Selecting required columns
+subset_data <- data_water_subset[, c("Country", "agric_withd", "ind_withd", "munic_withd")]
+       
+
+# Create the bubble chart with country names and color coding for Agricultural withdrwal (Figure 2) 
+ggplot(subset_data, aes(x = Country, y = agric_withd, size = agric_withd, color = agric_withd)) +
+  geom_point() +
+  geom_text(aes(label = Country), nudge_y = 3, size = 1.9) + # Add country names over bubbles
+  scale_size_continuous(range = c(3, 10), guide = "none") + # Remove size legend
+  scale_color_gradient(low = "blue", high = "red") + # Color gradient based on values
+  labs(x = "Country",
+       y = "Agricultural water withdrawal",
+       color = NULL, # Remove color legend title
+       size = NULL, # Remove size legend title
+       caption = paste0("Figure 2: Agricultural water withdrawal in Eastern Africa")) + # Add figure label
+  theme(axis.text.x = element_blank(), # Remove X-axis text
+        axis.ticks.x = element_blank(),  # Remove X-axis ticks
+        plot.caption = element_text(hjust = 0)) # Align caption to the left
+
+# Create the bubble chart with country names and color coding for Municipal withdrawal (Figure 3)
+ggplot(subset_data, aes(x = Country, y = munic_withd, size = munic_withd, color = munic_withd)) +
+  geom_point() +
+  geom_text(aes(label = Country), nudge_y = 0.1, size = 2.1) + # Add country names over bubbles
+  scale_size_continuous(range = c(3, 10), guide = "none") + # Remove size legend
+  scale_color_gradient(low = "blue", high = "red") + # Color gradient based on values
+  labs(x = "Country",
+       y = "Municipal water withdrawal",
+       color = NULL, # Remove color legend title
+       size = NULL,
+       caption = paste0("Figure 3: Municipal water withdrawal in Eastern Africa")) + # Add figure label
+  theme(axis.text.x = element_blank(), # Remove X-axis text
+        axis.ticks.x = element_blank(), # Remove X-axis ticks
+        plot.caption = element_text(hjust = 0)) # Align caption to the left
+
+  
+# Create the bubble chart with country names and color coding for Industrial withdrwal (Figure 4)
+ggplot(subset_data, aes(x = Country, y = ind_withd, size = ind_withd, color = ind_withd)) +
+  geom_point() +
+  geom_text(aes(label = Country), nudge_y = 0.03, size = 2.3) + # Add country names over bubbles
+  scale_size_continuous(range = c(3, 10), guide = "none") + # Remove size legend
+  scale_color_gradient(low = "blue", high = "red") + # Color gradient based on values
+  labs(x = "Country",
+       y = "Industrial water withdrawal",
+       color = NULL, # Remove color legend title
+       size = NULL,
+       caption = paste0("Figure 4: Industrial water withdrawal in Eastern Africa")) + # Add figure label
+  theme(axis.text.x = element_blank(), # Remove X-axis text
+        axis.ticks.x = element_blank(), # Remove X-axis ticks
+        plot.caption = element_text(hjust = 0)) # Align caption to the left
+
+
+```
+
+There has been an improvement in access to sanitation and clean drinking water (Table 2), though the trend will decline given the rapid urbanization and increased degradation of the environment [@Sherry2019]. Countries such as Comoros, Mauritius, Seychelles, and Djibouti have the highest access to clean drinking water with more than 90% of the population having access. In Kenya, Burundi, Rwanda, and Uganda, between 60 to 80% of the population can access clean drinking water. Ethiopia, Eritrea, Madagascar, Sudan, South Sudan, and Tanzania all have between 50 to 60% of their population accessing clean drinking water. Somalia has the lowest access in the region a
+
+```{r}
+# Printing Table 2; Access to safe drinking water in Eatern Africa
+# Selecting specific columns
+water_access <- data_water_subset[c("Country", "pop_safe_wat", "rural_pop_safe_wat", "urban_pop_safe_wat")]
+
+# Renaming the columns
+colnames(water_access) <- c("Country", "Total", "Rural", "Urban")
+
+# Omitting rows with NA values
+water_access <- na.omit(water_access)
+
+# Rounding the values to one decimal place
+water_access[, 2:4] <- lapply(water_access[, 2:4], function(x) round(as.numeric(x), 1))
+
+knitr::kable(water_access, "html") %>%
+  kableExtra::add_header_above(c("Table 2: Access to safe drinking water in Eastern Africa (2015)" = 4)) %>%
+  kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE, latex_options = "label = tab:water_resources") %>%
+  kableExtra::column_spec(seq_len(ncol(subset)), width = c(80, 100, 150, 150))
+
+
+```
+
+# Conclusion
+
+-   The Eastern Africa region has limited water resources representing about 6.5% of Africa’s internal resources.
+
+-   Water resource distribution within the region varies significantly with four aridity zones including moist sub-humid, dry sub-humid, semi-arid, and arid.
+
+-   The western part of Eastern Africa has surplus rainfall, while the northern areas have large water deficits.
+
+# References

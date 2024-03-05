@@ -1,9 +1,20 @@
 ---
-title: "index.qmd"
-author: "Bentono"
-format: html
+title: "Renewable Water Resources in Eastern Africa"
+author: "Benton Otieno"
+date: 2-16-2024
+format:
+  html:
+    embed-resources: true
+    toc: true
+    code-fold: true
+execute:
+  warning: false
+editor_options: 
+  chunk_output_type: console
 editor: visual
 ---
+
+<!-- This section will not be included in the HTML output -->
 
 Project description
 
@@ -19,115 +30,126 @@ When you click the **Render** button a document will be generated that includes 
 
 Import
 
+<!-- End of excluded section -->
+
 ```{r}
+#load packages
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(readxl)
+library(readr)
+library(janitor)
+library(tidyverse)
+```
+
+```{r}
+#Import data
 read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
+
 ```
 
 ```{r}
-  read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
-```
-
-\# Read the Excel file into a data frame
-
-```{r}
-data <- read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
+data_water <-  read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
 ```
 
 ```{r}
-glimpse(data)
-```
+#Select columns "1" to "20" and rows "1" to "15"
+data_water_subset <- data_water[1:15, 1:20]
 
-#Delete the row named dictionary
+glimpse(data_water_subset)
 
-```{r}
-data <- head(data, -1)
-```
+#Change column infromation and leave NAs as blank
+data_water_subset <- data_water_subset %>%
+  mutate(across(c(int_renew_wat, tot_renew_wat, depend_ratio, tot_renew_inhab, tot_dam_cap, irrig_withd, pop_safe_wat, rural_pop_safe_wat, urban_pop_safe_wat, latest_year), 
+                ~ifelse(is.na(.), "", .)))
 
-```{r}
-glimpse(data)
-```
-
-#Remove the last row
-
-```{r}
-data %>% select(-ncol(df))
+glimpse(data_water_subset)
 ```
 
 ```{r}
-glimpse(data)
+#Save tidy data in the processed folder
+write_csv(data_water_subset, here::here("data/processed/final_capstone_data.csv"))
+
 ```
+
+# Introduction
+
+Water security mainly refers to issues pertaining to quality, reliability, quantity, environmental provisioning, and equitable access to water supplies. According to the working definition of UN Water, water security can be defined as: “The capacity of a population to safeguard sustainable access to adequate quantities and acceptable quality of water for sustaining livelihoods, human well-being, and socio-economic development, for ensuring protection against water-borne pollution and water related disasters, and for preserving ecosystems in a climate of peace and political stability”.
+
+Africa has a combined population of over 1 billion people and represents about 17% of the global population. Its water resources are estimated to be nearly 9% of the world’s freshwater resources. However, these resources are unevenly distributed, with the most water-rich countries in Central and Western Africa holding 54% of the continent’s total resources and the 27 most water-poor countries holding only 7%. In the Eastern Africa region countries are characterised by varying degrees of water scarcity. The current study sought to analyse the exsiting renewable water resources in the region and water withdrawals
+
+# Methods
+
+Data was collected from the website of the World Food and Agriculture Organisation (FAO) and analysed to determine the exsiting renewable water resources in the region, water withdrawals, and access.
+
+# Results
+
+Freshwater sustainability is the most crucial sustainable development challenge since it deals with most needed and finite resource on earth. Availability of freshwater resources plays an important role in determining the socio-economic development of a country or region. Table 1 gives the renewable water resources in the region by average and country. As of 2015, Kenya’s and South Sudan’s renewable water resources per capita were rated between 500 to 1,000 m^3^ (water scarcity). Tanzania and Uganda were rated between 1,700 to 2,500 m^3^ (vulnerable) the remaining countries in the east African region were rated between 1,000 to 1,700 m^3^ (water stressed). By 2025, several countries in the Eastern Africa region are projected to face water scarcity or water stress as depicted in Figure 1.
 
 ```{r}
-data %>% mutate(int_renew_wat = as.integer(int_renew_wat), 
-                precip = as.integer(precip),
-                tot_renew_wat = as.integer(tot_renew_wat),
-                depend_ratio = as.integer(depend_ratio),
-                tot_renew_inhab = as.integer(tot_renew_inhab),
-                tot_dam_cap = as.integer(tot_dam_cap),
-                pop_safe_wat =as.integer(pop_safe_wat),
-                urban_pop_safe_wat = as.integer(urban_pop_safe_wat))
+#Loading packages
+
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(rmarkdown)
+library(ggplot2)
+library(gt)
+library(scales)
+library(readr)
+library(here)
+library(knitr)
+library(magrittr)
+
+
+#Printing Table 1 with a new row showing averages
+
+# Selecting the first four columns of
+subset <- data_water_subset[, 1:4]
+
+
+coerce_numeric <- function(x) {
+  as.numeric(as.character(x))
+}
+
+# Convert columns 2, 3, and 4 to numeric
+subset[, 2:4] <- lapply(subset[, 2:4], coerce_numeric)
+
+# Calculate average for columns 2, 3, and 4 excluding NA values
+averages <- colMeans(subset[, 2:4], na.rm = TRUE)
+
+# Create a new row with the averages
+average_row <- c("Average", round(averages, 3))
+
+# Add the new row to the data frame
+subset <- rbind(subset, average_row)
+
+#Delete extra rows
+subset <- subset[-c(17), ]
+
+# Define the column widths
+column_widths <- c(150, 100, 120, 80)
+
+# Load the required library
+library(kableExtra)
+
+
+# Print the dataframe as a table with adjustable column widths
+kable(subset, "html") %>%
+  kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE) %>%
+  column_spec(seq_len(ncol(subset)), width = column_widths)
 ```
 
-```{r}
-data %>% mutate(year_obt...16 = as.Date(year_obt...16),
-                year_obt...10 = as.Date(year_obt...10),
-                year_obt...12 = as.Date(year_obt...12),
-                year_obt...14 = as.Date(year_obt...14),
-                latest_year = as.Date(latest_year))
-```
+Of the Eastern Africa countries, Eritrea and Djibouti faced the highest water stress index levels with a ratio of water withdrawals to supply more than 80% (Figure 2). The remaining countries had low water stress (less than 10%) except Tanzania with a low to medium stress (10 – 20%). The water stress index was developed for countries, governments, and companies to identify the possible risk of water supply interruptions to businesses, agricultural activities, operations, domestic and industrial use, and other water related activities.
 
-```{r}
-data <- read_excel(here::here("data/raw/water_resources_east_africa_Bentono.xlsx"))
-```
+Owing to population growth, climate change, expanded irrigation, improved living standards, and increased industrial activities, the gap between water demand and supply has been growing resulting in reduced freshwater availability. Rapid urbanization and expanded irrigation farming (industrial and commercial) are threatening the limited water resources, including freshwater sources. Agriculture being the main economic activity in the region accounts for up to 87% use of the available water resources.
 
-```{r}
-glimpse(data)
-```
+There has been an improvement in access to sanitation and clean drinking water (Table 2), though the trend will decline given the rapid urbanization and increased degradation of the environment. Countries such as Comoros, Mauritius, Seychelles, and Djibouti have the highest access to clean drinking water with more than 90% of the population having access. In Kenya, Burundi, Rwanda, and Uganda, between 60 to 80% of the population can access clean drinking water. Ethiopia, Eritrea, Madagascar, Sudan, South Sudan, and Tanzania all have between 50 to 60% of their population accessing clean drinking water. Somalia has the lowest access in the region at 31.7%.
 
-Delete extra rows
+# Conclusion
 
-```{r}
-water_res_eafrica <- data %>% slice(-16:-19)
-```
+The Eastern Africa region has limited water resources representing about 6.5% of Africa’s internal resources. Water resource distribution within the region varies significantly with four aridity zones including moist sub-humid, dry sub-humid, semi-arid, and arid. The western part of Eastern Africa has surplus rainfall, while the northern areas have large water deficits.
 
-Omit NA
-
-```{r}
-na.omit(water_res_eafrica)
-```
-
-Change column information from character to dbl
-
-```{r}
-cleaned <- water_res_eafrica %>% mutate(int_renew_wat = as.double(int_renew_wat),
-                             tot_renew_wat = as.double(tot_renew_wat),
-                             depend_ratio = as.double(depend_ratio),
-                             tot_renew_inhab =as.double(tot_renew_inhab),
-                             tot_dam_cap = as.double(tot_dam_cap),
-                             irrig_withd = as.double(irrig_withd),
-                             pop_safe_wat = as.double(pop_safe_wat),
-                             rural_pop_safe_wat = as.double(rural_pop_safe_wat),
-                             urban_pop_safe_wat = as.double(urban_pop_safe_wat),
-                             year_obt...16 = as.double(year_obt...16),
-                             time_frame = as.numeric(time_frame))
-```
-
-```{r}
-write.csv(cleaned, file = "cloud/project/data/processed/cleaned.csv", row.names = FALSE)
-```
-
-```{r}
-file.path("processed")
-```
-
-```{r}
-processed_path <- file.path("path/to/processed")
-```
-
-```{r}
-print(processed_path)
-```
-
-```{r}
-write.csv(cleaned, file = paste0(processed_path, "/cleaned.csv"), row.names = FALSE)
-```
+# References

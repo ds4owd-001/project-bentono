@@ -1,0 +1,20 @@
+variable_name;description
+water resources;
+precip ;precipitation mm/year
+int_renew_wat ;Internal renewable water resources (million m3)
+tot_renew_wat ;total renewable water resources (million m3)
+depend_ratio ;dependency ratio %
+tot_renew_inhab ;Total renewable water resources per inhabitant
+tot_dam_cap ;Total dam capacity million m3
+time_frame ;Selected time frame (applies to columns B to G)
+water use ;
+agric_withd ;Agricultural water withdrawal (10^9 m3 per year)
+year_obt ;year obtained
+ind_withd ;Industrial water withdrawal (10^9 m3 per year)
+munic_withd ;Municipal water withdrawal (10^9 m3 per year)
+irrig_withd ;Irrigation water withdrawal (10^9 m3 per year)
+water acces;
+pop_safe_wat ;Total population with access to safe drinking-water (%)
+rural_pop_safe_wat ;Rural population with access to safe drinking-water (%)
+urban_pop_safe_wat ;Urban population with access to safe drinking-water (%)
+latest_year ;Latest values between 20013 to 2017

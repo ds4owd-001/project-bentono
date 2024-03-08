@@ -3,7 +3,9 @@ title: "Renewable Water Resources in Eastern Africa"
 author:
   name: "Benton Otieno"
   orcid: 0000-0002-1763-1584
-email: bentononyango@gmail.com
+  email: bentononyango@gmail.com
+  LinkedIn: https://www.linkedin.com/in/bentonotieno/
+  website: https://benton.co.ke/
 date: 2-16-2024
 output:
   bookdown::html_document2:
@@ -75,7 +77,7 @@ write_csv(data_water_subset, here::here("data/processed/final_capstone_data.csv"
 
 # Results
 
-Freshwater sustainability is the most crucial sustainable development challenge since it deals with most needed and finite resource on earth. Availability of freshwater resources plays an important role in determining the socio-economic development of a country or region. Table 1 gives the renewable water resources in the region by average and country. As of 2015, Kenya’s and South Sudan’s renewable water resources per capita were rated between 500 to 1,000 m^3^ (water scarcity). Tanzania and Uganda were rated between 1,700 to 2,500 m^3^ (vulnerable) the remaining countries in the east African region were rated between 1,000 to 1,700 m^3^ (water stressed) as depicted in Figure 1. By 2025, several countries in the Eastern
+Freshwater sustainability is the most crucial sustainable development challenge since it deals with most needed and finite resource on earth. Availability of freshwater resources plays an important role in determining the socio-economic development of a country or region. Table 1 gives the renewable water resources in the region by average and country. As of 2015, Kenya’s and South Sudan’s renewable water resources per capita were rated between 500 to 1,000 m^3^ (water scarcity). Tanzania and Uganda were rated between 1,700 to 2,500 m^3^ (vulnerable) the remaining countries in the east African region were rated between 1,000 to 1,700 m^3^ (water stressed) as depicted in Figure 1.
 
 ```{r}
 #Loading packages for data analysis
@@ -101,9 +103,11 @@ library(ggrepel)
 library(cowplot)
 library(bibtex)
 
+```
+
+```{r}
 #Printing Table 1 with a new row showing averages
 
-# Selecting the first four columns of the data set
 subset <- data_water_subset[, 1:4]
 
 
@@ -131,7 +135,7 @@ column_widths <- c(80, 100, 150, 150)
 
 
 # Define the new column names
-new_column_names <- c("Country", "Precitation (mm/yr)", "Internal renewable water (million m3)", "Total renewable water (million m3)")
+new_column_names <- c("Country", "Precipitation (mm/yr)", "Internal renewable water (million m3)", "Total renewable water (million m3)")
 
 # Replace the existing column names with the new ones
 colnames(subset) <- new_column_names
@@ -144,10 +148,12 @@ knitr::kable(subset, "html") %>%  # Render the table using knitr
                                               "caption = {\\label{tab:water_resources} Table 1: Renewable water Resources in East Africa (2013-2017)}")) %>%  # Set the caption with the label
   kableExtra::column_spec(seq_len(ncol(subset)), width = c(80, 100, 150, 150))  # Specify column widths
 
-
 ```
 
 ```{r}
+#| fig-cap: Total renewable water resources per inhabitant (m3)
+#| label: fig-water_per_inhab
+#| 
 #Plotting Figure 1 (Bar graph of Country vs Totat renewable water resources/inhabitant)
 
 # Copy the original data frame and update the column name

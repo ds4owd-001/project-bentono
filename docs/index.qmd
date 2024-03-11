@@ -25,17 +25,27 @@ editor_options:
 editor: visual
 header-includes:
   - \usepackage{hyperref}
-bibliography: references.bib
+bibliography: 
+  - references.bib
+  - references1.bib
 citation_package: natbib
 citation_minimal: true
 citation_style: author-year
 ---
 
+::: {style="display: flex; align-items: center;"}
+<a href="https://www.linkedin.com/in/bentonotieno/" target="_blank">LinkedIn</a>     [Home Page](https://benton.co.ke/)
+:::
+
+------------------------------------------------------------------------
+
 # Introduction
 
 Water security mainly refers to issues pertaining to quality, reliability, quantity, environmental provisioning, and equitable access to water supplies. According to the working definition of UN Water, water security can be defined as: “The capacity of a population to safeguard sustainable access to adequate quantities and acceptable quality of water for sustaining livelihoods, human well-being, and socio-economic development, for ensuring protection against water-borne pollution and water related disasters, and for preserving ecosystems in a climate of peace and political stability”.
 
-Africa has a combined population of over 1 billion people and represents about 17% of the global population. Its water resources are estimated to be nearly 9% of the world’s freshwater resources [@Haile2020]. However, these resources are unevenly distributed, with the most water-rich countries in Central and Western Africa holding 54% of the continent’s total resources and the 27 most water-poor countries holding only 7%. In the Eastern Africa region, countries are characterised by varying degrees of water scarcity as given by @Mapani2019. The current study sought to analyse the exsiting renewable water resources in the region and water withdrawals.
+Africa has a combined population of over 1 billion people and represents about 17% of the global population. Its water resources are estimated to be nearly 9% of the world’s freshwater resources [@Haile2020]. However, these resources are unevenly distributed, with the most water-rich countries in Central and Western Africa holding 54% of the continent’s total resources and the 27 most water-poor countries holding only 7%. In the Eastern Africa region, countries are characterised by varying degrees of water scarcity as given by @Mapani2019.
+
+In 2004, the African Union (AU) launched the Africa Water Vision for 2025, which seeks to prevent the threats posed to water security in Africa and create a future where there is an equitable and sustainable use and management of water resources for poverty alleviation, socio-economic development, regional cooperation, and the environment. This will be achieved by sustainably managing Africa’s waters, rich biodiversity, land, forests, and putting in place adaptive measures for mitigating climate change [@Mutschinski2021] .The current study sought to analyse the exsiting renewable water resources and water withdrawals and access in the Eastern Africa region.
 
 # Methods
 

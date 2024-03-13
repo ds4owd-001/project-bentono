@@ -273,7 +273,7 @@ water_access <- na.omit(water_access)
 water_access[, 2:4] <- lapply(water_access[, 2:4], function(x) round(as.numeric(x), 1))
 
 knitr::kable(water_access, "html") %>%
-  kableExtra::add_header_above(c("Table 2: Access to safe drinking water in Eastern Africa (2015)" = 4)) %>%
+  kableExtra::add_header_above(c("Table 2: Access (population percent) to safe drinking water in Eastern Africa (2015)" = 4)) %>%
   kableExtra::kable_styling(bootstrap_options = c("striped", "hover"), full_width = FALSE, latex_options = "label = tab:water_resources") %>%
   kableExtra::column_spec(seq_len(ncol(subset)), width = c(80, 100, 150, 150))
 

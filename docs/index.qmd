@@ -49,7 +49,7 @@ In 2004, the African Union (AU) launched the Africa Water Vision for 2025, which
 
 # Methods
 
-Data was collected from the \[FAO AQUASTAT\]([https://data.apps.fao.org/aquastat/?lang=en&share=f-8ef986ca-479a-4fde-a237-8f5b33572b11](#0){style="font-size: 11.4pt;"}) of the World Food and Agriculture Organisation, stored on an excel workbook, then imported to R for cleaning and analysis to determine the renewable water resources in the region, water withdrawals, and access. The FAO AQUASTAT is a global information system on water resources and serves as a comprehensive platform that disseminates data for water resource managment across the world.
+Data was collected from [AQUASTAT](https://www.fao.org/aquastat/en/) of the World Food and Agriculture Organisation (FAO), stored on an excel workbook, then imported to R for cleaning and analysis to determine the renewable water resources in the region, water withdrawals, and access. The FAO AQUASTAT is a global information system on water resources and serves as a comprehensive platform that disseminates data for water resource management across the world.
 
 ***Data importation and cleaning***
 
@@ -288,5 +288,10 @@ knitr::kable(water_access, "html") %>%
 -   Water resource distribution within the region varies significantly with four aridity zones including moist sub-humid, dry sub-humid, semi-arid, and arid.
 
 -   The western part of Eastern Africa has surplus rainfall, while the northern areas have large water deficits.
+
+# Acknowledgement
+
+This work was developed following the successful completion of the data science for [open
+wash data](https://ds4owd-001.github.io/website/) course. The author is grateful to [Lars Schöbitz](https://openwashdata.org/about/lars/) of the Global Health Engineering group at ETH Zurich for the training.
 
 # References

@@ -49,7 +49,7 @@ In 2004, the African Union (AU) launched the Africa Water Vision for 2025, which
 
 # Methods
 
-Data was collected from [AQUASTAT](https://www.fao.org/aquastat/en/) of the World Food and Agriculture Organisation (FAO), stored on an excel workbook, then imported to R for cleaning and analysis to determine the renewable water resources in the region, water withdrawals, and access. The FAO AQUASTAT is a global information system on water resources and serves as a comprehensive platform that disseminates data for water resource management across the world.
+Data was collected from [AQUASTAT](https://www.fao.org/aquastat/en/) database of the World Food and Agriculture Organisation (FAO), stored on an excel workbook, then imported to R for cleaning and analysis to determine the renewable water resources in the region, water withdrawals, and access. The FAO AQUASTAT is a global information system on water resources and serves as a comprehensive platform that disseminates data for water resource management across the world.
 
 ***Data importation and cleaning***
 
@@ -88,7 +88,7 @@ write_csv(data_water_subset, here::here("data/processed/final_capstone_data.csv"
 
 # Results
 
-Freshwater sustainability is the most crucial sustainable development challenge since it deals with most needed and finite resource on earth. Availability of freshwater resources plays an important role in determining the socio-economic development of a country or region. Table 1 gives the renewable water resources in the region by average and country. As of 2015, Kenya’s and South Sudan’s renewable water resources per capita were rated between 500 to 1,000 m^3^ (water scarcity). Tanzania and Uganda were rated between 1,700 to 2,500 m^3^ (vulnerable) the remaining countries in the east African region were rated between 1,000 to 1,700 m^3^ (water stressed) as depicted in Figure 1.
+Freshwater sustainability is the most crucial sustainable development challenge since it deals with most needed and finite resource on earth. Availability of freshwater resources plays an important role in determining the socio-economic development of a country or region. **Table 1** gives the renewable water resources in the region by average and country. As of 2015, Kenya’s and South Sudan’s renewable water resources per capita were rated between 500 to 1,000 m^3^ (water scarcity). Tanzania and Uganda were rated between 1,700 to 2,500 m^3^ (vulnerable) the remaining countries in the east African region were rated between 1,000 to 1,700 m^3^ (water stressed) as depicted in **Figure 1**.
 
 ```{r}
 #Loading packages for data analysis
@@ -117,6 +117,9 @@ library(bibtex)
 ```
 
 ```{r}
+
+
+
 #Printing Table 1 with a new row showing averages
 
 subset <- data_water_subset[, 1:4]
@@ -162,9 +165,7 @@ knitr::kable(subset, "html") %>%  # Render the table using knitr
 ```
 
 ```{r}
-#| fig-cap: Total renewable water resources per inhabitant (m3)
-#| label: fig-water_per_inhab
-#| 
+
 #Plotting Figure 1 (Bar graph of Country vs Totat renewable water resources/inhabitant)
 
 # Copy the original data frame and update the column name
@@ -196,7 +197,7 @@ print(plot)
 
 ```
 
-Of the Eastern Africa countries, Eritrea and Djibouti faced the highest water stress index levels with a ratio of water withdrawals to supply more than 80%. The remaining countries had low water stress (less than 10%) except Tanzania with a low to medium stress (10 – 20%). The water stress index was developed for countries, governments, and companies to identify the possible risk of water supply interruptions to businesses, agricultural activities, operations, domestic and industrial use, and other water related activities. Owing to population growth, climate change, expanded irrigation, improved living standards, and increased industrial activities, the gap between water demand and supply has been growing resulting in reduced freshwater availability. Rapid urbanization and expanded irrigation farming (industrial and commercial) are threatening the limited water resources, including freshwater sources undefined. Agriculture (Figure 2) being the main economic activity in the region accounts for up to 87% use of the available wateresources as compared to municipal (Figure 3) and industrial (Figure 4) uses. The values given for the withdrawals are varyring estimates between 1999 and 2017.
+Of the Eastern Africa countries, Eritrea and Djibouti faced the highest water stress index levels with a ratio of water withdrawals to supply more than 80%. The remaining countries had low water stress (less than 10%) except Tanzania with a low to medium stress (10 – 20%). The water stress index was developed for countries, governments, and companies to identify the possible risk of water supply interruptions to businesses, agricultural activities, operations, domestic and industrial use, and other water related activities. Owing to population growth, climate change, expanded irrigation, improved living standards, and increased industrial activities, the gap between water demand and supply has been growing resulting in reduced freshwater availability. Rapid urbanization and expanded irrigation farming (industrial and commercial) are threatening the limited water resources, including freshwater sources undefined. Agriculture (**Figure 2**) being the main economic activity in the region accounts for up to 87% use of the available wateresources as compared to municipal (**Figure 3**) and industrial (**Figure 4**) uses. The values given for the withdrawals are varyring estimates between 1999 and 2017.
 
 ```{r}
 #Plotting Figures 2, 3, and 4 showing renewable water withdrawals by different ssectors per country
@@ -257,7 +258,7 @@ ggplot(subset_data, aes(x = Country, y = ind_withd, size = ind_withd, color = in
 
 ```
 
-There has been an improvement in access to sanitation and clean drinking water (Table 2), though the trend will decline given the rapid urbanization and increased degradation of the environment [@Sherry2019]. Countries such as Comoros, Mauritius, Seychelles, and Djibouti have the highest access to clean drinking water with more than 90% of the population having access. In Kenya, Burundi, Rwanda, and Uganda, between 60 to 80% of the population can access clean drinking water. Ethiopia, Eritrea, Madagascar, Sudan, South Sudan, and Tanzania all have between 50 to 60% of their population accessing clean drinking water. Somalia has the lowest access in the region a
+There has been an improvement in access to sanitation and clean drinking water (**Table 2**), though the trend will decline given the rapid urbanization and increased degradation of the environment [@Sherry2019]. Countries such as Comoros, Mauritius, Seychelles, and Djibouti have the highest access to clean drinking water with more than 90% of the population having access. In Kenya, Burundi, Rwanda, and Uganda, between 60 to 80% of the population can access clean drinking water. Ethiopia, Eritrea, Madagascar, Sudan, South Sudan, and Tanzania all have between 50 to 60% of their population accessing clean drinking water. Somalia has the lowest access in the region a
 
 ```{r}
 # Printing Table 2; Access to safe drinking water in Eatern Africa
@@ -291,7 +292,6 @@ knitr::kable(water_access, "html") %>%
 
 # Acknowledgement
 
-This work was developed following the successful completion of the data science for [open
-wash data](https://ds4owd-001.github.io/website/) course. The author is grateful to [Lars Schöbitz](https://openwashdata.org/about/lars/) of the Global Health Engineering group at ETH Zurich for the training.
+This work was developed following the successful completion of the data science for [open wash data](https://ds4owd-001.github.io/website/) course. The author is grateful to [Lars Schöbitz](https://openwashdata.org/about/lars/) of the Global Health Engineering group at ETH Zurich for the training.
 
 # References

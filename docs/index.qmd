@@ -45,11 +45,11 @@ Water security mainly refers to issues pertaining to quality, reliability, quant
 
 Africa has a combined population of over 1 billion people and represents about 17% of the global population. Its water resources are estimated to be nearly 9% of the world’s freshwater resources [@Haile2020]. However, these resources are unevenly distributed, with the most water-rich countries in Central and Western Africa holding 54% of the continent’s total resources and the 27 most water-poor countries holding only 7%. In the Eastern Africa region, countries are characterised by varying degrees of water scarcity as given by @Mapani2019.
 
-In 2004, the African Union (AU) launched the Africa Water Vision for 2025, which seeks to prevent the threats posed to water security in Africa and create a future where there is an equitable and sustainable use and management of water resources for poverty alleviation, socio-economic development, regional cooperation, and the environment. This will be achieved by sustainably managing Africa’s waters, rich biodiversity, land, forests, and putting in place adaptive measures for mitigating climate change [@Mutschinski2021] .The current study sought to analyse the exsiting renewable water resources and water withdrawals and access in the Eastern Africa region.
+In 2004, the African Union (AU) launched the Africa Water Vision for 2025, which seeks to prevent the threats posed to water security in Africa and create a future where there is an equitable and sustainable use and management of water resources for poverty alleviation, socio-economic development, regional cooperation, and the environment. This will be achieved by sustainably managing Africa’s waters, rich biodiversity, land, forests, and putting in place adaptive measures for mitigating climate change [@Mutschinski2021] .The current study sought to analyse the renewable water resources and water withdrawals and access in the Eastern Africa region.
 
 # Methods
 
-Data was collected from the \[FAO AQUASTAT Dissemination System\]([https://data.apps.fao.org/aquastat/?lang=en&share=f-8ef986ca-479a-4fde-a237-8f5b33572b11](#0){style="font-size: 11.4pt;"}) of the World Food and Agriculture Organisation, stored on an excel workbook, then impoted to R for cleaning and analysis to determine the exsiting renewable water resources in the region, water withdrawals, and access.
+Data was collected from the \[FAO AQUASTAT\]([https://data.apps.fao.org/aquastat/?lang=en&share=f-8ef986ca-479a-4fde-a237-8f5b33572b11](#0){style="font-size: 11.4pt;"}) of the World Food and Agriculture Organisation, stored on an excel workbook, then imported to R for cleaning and analysis to determine the renewable water resources in the region, water withdrawals, and access. The FAO AQUASTAT is a global information system on water resources and serves as a comprehensive platform that disseminates data for water resource managment across the world.
 
 ***Data importation and cleaning***
 
@@ -63,6 +63,7 @@ library(readxl)
 library(readr) 
 library(janitor) 
 library(tidyverse)
+library(markdown)
 ```
 
 ```{r}
